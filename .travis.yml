@@ -5,6 +5,8 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install coveralls
+  - pip install pytest
+  - pip install pytest-cov
 
 services:
   - postgresql
@@ -18,7 +20,8 @@ before_script:
 
 
 script:
-  - nosetests --with-coverage --cover-tests
+  - pytest
+  - pytest --cov=./
   - coverage report
 
 after_success:

@@ -13,7 +13,7 @@ services:
 
 env:
   global:
-    - SECRET = 'thbhfvfnnxdfgjsxhkxs'
+    - SECRET='sddsdwejernefnbfbhejwjfjfjwjnd'
 
 before_script:
   - psql -c 'CREATE DATABASE test_ireporter' -U postgres

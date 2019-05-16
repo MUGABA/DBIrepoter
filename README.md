@@ -1,5 +1,6 @@
 # DBIrepoter
-
+[![Build Status](https://travis-ci.org/MUGABA/DBIrepoter.svg?branch=master)](https://travis-ci.org/MUGABA/DBIrepoter)
+[![Coverage Status](https://coveralls.io/repos/github/MUGABA/DBIrepoter/badge.svg?branch=master)](https://coveralls.io/github/MUGABA/DBIrepoter?branch=master)
 
 ## About Irepoter
 

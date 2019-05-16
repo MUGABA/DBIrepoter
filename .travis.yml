@@ -1,0 +1,25 @@
+language: python
+python:
+  - "3.6"
+
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls
+
+services:
+  - postgresql
+
+ENV:
+  global:
+    - SECRET = 'thbhfvfnnxdfgjsxhkxs'
+
+before_script:
+  - psql -c 'CREATE DATABASE test_ireporter' -U postgres
+
+
+script:
+  - nosetests --with-coverage --cover-tests
+  - coverage report
+
+after_success:
+  - coveralls

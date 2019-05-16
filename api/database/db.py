@@ -36,7 +36,7 @@ class Database:
 				is_admin BOOL NOT NULL
 				)""",
 
-				"""CREATE TABLE IF NOT EXISTS incident_table(
+				"""CREATE TABLE IF NOT EXISTS incidentTable(
 				incident_id SERIAL PRIMARY KEY,
 				createdOn TEXT NOT NULL,
 				createdBy VARCHAR(50) NOT NULL,
@@ -51,7 +51,7 @@ class Database:
 		for command in commands:
 			self.cursor.execute(command)
 	def select_all_incidents(self,record_type):
-		sql = ("""SELECT * from incident_table where record_type = '{}'""".format(record_type))
+		sql = ("""SELECT * from incidentTable where record_type = '{}'""".format(record_type))
 		self.cursor.execute(sql)
 		return self.cursor.fetchall()
 	def select_one_record(self,table_name, criteria, input_data):
@@ -67,7 +67,7 @@ class Database:
 
 	def add_incident_record(self,createdOn, createdBy,record_type, location_lat,
 							location_long, status, comment):
-		sql = ("""INSERT INTO incident_table(createdOn, createdBy, record_type, location,
+		sql = ("""INSERT INTO incidentTable(createdOn, createdBy, record_type, location,
 				comment,status)
 		VALUES('{}', '{}', '{}', ARRAY['{}', '{}'], '{}', '{}');"""
 				.format(createdOn,createdBy,record_type,location_lat,location_long,
@@ -83,27 +83,25 @@ class Database:
 			password,phonenumber,registered,is_admin))
 		return self.cursor.execute(sql)
 	def update_incident_record(self, field_to_update, incident_id_in,input_data, record_type):
-		sql = ("""UPDATE incident_table SET {} = '{}' WHERE incident_id = '{}' AND record_type = '{}'"""
+		
+		sql = ("""UPDATE incidentTable SET {} = '{}' WHERE incident_id = '{}' AND record_type = '{}'"""
 			.format(field_to_update, input_data, incident_id_in, record_type))
+		print(field_to_update)
 		return self.cursor.execute(sql)
-	# def update_incident_record(self,field_to_update, incident_id_in, input_data, record_type):
-	# 	sql = (""" UPDATE incident_table SET {} = '{}' where incident_id = '{}' and record_type = '{}'"""
-	# 		.format(field_to_update, input_data, incident_id_in, record_type))
-	# 	return self.cursor.execute(sql)
 
 	def update_incident_record_location(self, incident_id_in, input_data1, input_data2, record_type):
-		sql = (""" UPDATE incident_table SET location[1] = '{}',
+		sql = (""" UPDATE incidentTable SET location[1] = '{}',
 			location[2] = '{}' WHERE 	incident_id = '{}' AND record_type = '{}'"""
 			.format(input_data1, input_data2,incident_id_in,  record_type))
 		return self.cursor.execute(sql)
 
 	def delete_incident_record(self, incident_id, record_type):
-		sql = (""" DELETE from incident_table where incident_id = '{}' and record_type = '{}'"""
+		sql = (""" DELETE from incidentTable where incident_id = '{}' and record_type = '{}'"""
 			.format(incident_id,record_type))
 		return self.cursor.execute(sql)
 
 	def drop_tables(self):
-		command = (""" DROP TABLE user_table""", """ DROP TABLE incident_table""")
+		command = (""" DROP TABLE user_table""", """ DROP TABLE incidentTable""")
 		for comm in command:
 			self.cursor.execute(comm)
 

@@ -27,13 +27,13 @@ def create_incident(current_user):
 
 	if not incident.validate_location(location):
 		return jsonify({'status': 400,
-			'error': 'location must be a lat and long format'})
+			'error': 'location must be a lat and long format'}),400
 
 	inciden = Incident(current_user[0],incident_type,location,comment)
 
 	db_handler().add_incident_record(inciden.createdOn, inciden.createdBy,
 		inciden.record_type, inciden.location[0],inciden.location[1],
-		inciden.status, inciden.comment)
+		inciden.comment,inciden.status)
 	data_dict={
 	"createdon": inciden.createdOn,
 	"record_type": inciden.record_type,
@@ -61,7 +61,7 @@ def get_an_incident(incident_id, record_type):
 	except:
 		return jsonify({'status': 200, 'message':'incident id must be an integer'}),200
 
-	fetched_data = db_handler().select_one_incident('incident_table','incident_id',
+	fetched_data = db_handler().select_one_incident('incidentTable','incident_id',
 										incidentId, record_type)
 	if not fetched_data:
 		return jsonify({'status':200, 'message':'incident is not found'}),200
@@ -92,7 +92,7 @@ def edit_incident_location(incident_id, record_type):
 	if not incident.validate_location(location):
 		return jsonify({'status':400,
 		 'error':'Location field only takes in a list of valid Lat and Long cordinates'}),400
-	redflag_data_saved = db_handler().select_one_incident('incident_table','incident_id',
+	redflag_data_saved = db_handler().select_one_incident('incidentTable','incident_id',
 							incident_Id, record_type)
 	if not redflag_data_saved:
 		return jsonify({'status':400,'error':'incident is not found'}),400
@@ -103,7 +103,7 @@ def edit_incident_location(incident_id, record_type):
 	db_handler().update_incident_record_location(incident_Id,
 				location[0], location[1],record_type)
 	incident_record_type = redflag_data_saved[3]
-	redflag_data_saved = db_handler().select_one_incident('incident_table','incident_id',
+	redflag_data_saved = db_handler().select_one_incident('incidentTable','incident_id',
 							incident_Id, record_type)
 
 	data_dict = {
@@ -112,8 +112,9 @@ def edit_incident_location(incident_id, record_type):
             "createdby": redflag_data_saved[2],
             "record_type": redflag_data_saved[3],
             "incident_location": redflag_data_saved[4],
-			'status': redflag_data_saved[6],
-			'comment':redflag_data_saved[7]
+			'comment':redflag_data_saved[6],
+			'status': redflag_data_saved[7]
+
 	}
 
 	return jsonify({'status':200, 'data': data_dict,
@@ -125,7 +126,7 @@ def delete_incident(incident_id, record_type):
     except:
         return jsonify({'status': 400,
                         'error': 'incident_id must be a valid number'}), 400
-    delete_data = db_handler().select_one_incident('incident_table', 'incident_id',
+    delete_data = db_handler().select_one_incident('incidentTable', 'incident_id',
                                                  incident_Id, record_type)
     if not delete_data:
         return jsonify({'status': 200,
@@ -138,6 +139,8 @@ def delete_incident(incident_id, record_type):
 def edit_comment_of_incident(incident_id, record_type):
     info=request.get_json()
     comment=info.get('comment')
+    #print(info)
+    print(incident.validate_comment(comment))
     try:
         incident_Id=int(incident_id)
     except:
@@ -150,17 +153,18 @@ def edit_comment_of_incident(incident_id, record_type):
     if not incident.validate_comment(comment):
         return jsonify({'status': 400,
                         'error': 'comment must be a string'}), 400
-    incident_result = db_handler().select_one_incident('incident_table', 'incident_id',
-                                                        int(incident_Id), record_type)
+    incident_result = db_handler().select_one_incident('incidentTable', 'incident_id',
+    							int(incident_Id), record_type)
+    #print(incident_result[6])
     if not incident_result:
         return jsonify({'status': 200,
                 'message': 'incident record not found'}), 200
     if incident_result[7] != 'Draft':
         return jsonify({'status': 400,
-                        'error': 'You cannot change the location while the incident status is not Draft'}), 400
+                        'error': 'You cannot change the comment while the incident status is not Draft'}), 400
     db_handler().update_incident_record('comment', incident_Id, comment, record_type)
     returned_type=incident_result[3]
-    incident_result=db_handler().select_one_incident('incident_table', 'incident_id',
+    incident_result=db_handler().select_one_incident('incidentTable', 'incident_id',
                                                   incident_Id, record_type)
     
     redflag_dict={
@@ -172,6 +176,7 @@ def edit_comment_of_incident(incident_id, record_type):
             "comment": incident_result[6],
             "status": incident_result[7]
             }
+    print(redflag_dict)
     return jsonify({'status': 200, 'data': redflag_dict,
                 'message': f"Updated {returned_type} record's comment"}), 200
 
@@ -190,16 +195,16 @@ def change_status_of_incident(incident_id, record_type):
 		return jsonify({'status':400,
 				'error':'status field is missing or not found'}),400
 
-	if not validate.validate_status(status):
+	if not incident.validate_status(status):
 		return jsonify({'status':400, 'error':'status must be s string'}),400
-	incident_to_update = db_handler().select_one_incident('incident_table',
+	incident_to_update = db_handler().select_one_incident('incidentTable',
 					'incident_id',incident_Id, record_type)
 	if not incident_to_update:
 		return jsonify({'status':200,
 			'error': 'incident not found'}),200
-	db_handler().update_incident_record('status','incident_id',
-				incident_Id, record_type)
-	incident_to_update = db_handler().select_one_incident('incident_table',
+	db_handler().update_incident_record('status',incident_Id,
+				status, record_type)
+	incident_to_update = db_handler().select_one_incident('incidentTable',
 				'incident_id',incident_Id, record_type)
 	incident_to = incident_to_update[3]
 

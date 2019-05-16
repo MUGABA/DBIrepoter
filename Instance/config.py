@@ -6,7 +6,7 @@ class Baseconfig:
 	DEBUG = False
 	TESTING = False
 	SECRET = os.getenv('SECRET')
-	print(SECRET)
+	# print(SECRET)
 	DATABASE_URI = 'postgres://postgres:rashid123@localhost:5432/dbireporter'
 
 

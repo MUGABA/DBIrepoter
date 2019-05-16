@@ -45,7 +45,7 @@ def get_an_intervention(current_user, incident_id):
 @protected_route
 @restrict_admin_access
 def change_redflag_location(current_user, incident_id):
-	check_info = db_handler().select_one_record('incident_table', 
+	check_info = db_handler().select_one_record('incidentTable', 
 			'incident_id',incident_id)
 	if int(check_info[2]) != current_user[0]:
 		return jsonify({
@@ -57,7 +57,7 @@ def change_redflag_location(current_user, incident_id):
 @protected_route
 @restrict_admin_access
 def change_intervention_location(current_user, incident_id):
-	check_info = db_handler().select_one_record('incident_table', 
+	check_info = db_handler().select_one_record('incidentTable', 
 			'incident_id',incident_id)
 	if int(check_info[2]) != current_user[0]:
 		return jsonify({
@@ -70,7 +70,7 @@ def change_intervention_location(current_user, incident_id):
 @restrict_admin_access
 def change_redflag_comment(current_user, incident_id):
 
-	check_data = db_handler().select_one_record('incident_table', 
+	check_data = db_handler().select_one_record('incidentTable', 
 			'incident_id',incident_id)
 	if check_data:
 		if int(check_data[2]) != current_user[0]:
@@ -85,7 +85,7 @@ def change_redflag_comment(current_user, incident_id):
 @restrict_admin_access
 def change_intervention_comment(current_user, incident_id):
 
-	check_data = db_handler().select_one_record('incident_table', 
+	check_data = db_handler().select_one_record('incidentTable', 
 			'incident_id',incident_id)
 
 	if int(check_data[2]) != current_user[0]:
@@ -98,7 +98,7 @@ def change_intervention_comment(current_user, incident_id):
 @protected_route
 @restrict_admin_access
 def delete_redflag(current_user,incident_id):
-	delete = db_handler().select_one_record('incident_table','incident_id',
+	delete = db_handler().select_one_record('incidentTable','incident_id',
 				incident_id)
 	if delete:
 		if int(delete[2]) != current_user[0]:
@@ -111,7 +111,7 @@ def delete_redflag(current_user,incident_id):
 @protected_route
 @restrict_admin_access
 def delete_intervention(current_user, incident_Id):
-	delete = db_handler().select_one_record('incident_table','incident_id',
+	delete = db_handler().select_one_record('incidentTable','incident_id',
 					incident_Id)
 	if delete:
 		if int(delete[2]) != current_user[0]:

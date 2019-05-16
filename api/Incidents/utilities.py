@@ -13,8 +13,8 @@ class ValidateIncident:
 	@staticmethod
 	def validate_status(status):
 		#validating status of the incident done by the admin
-		return isinstance(status, str) and status == 'under investigation' or \
-				status == 'rejected' or status == 'resolved'
+		return isinstance(status, str) and status == 'Under investigation' or \
+				status == 'Rejected' or status == 'Resolved'
 
 	@staticmethod
 	def validate_image_and_videos(image_or_video):

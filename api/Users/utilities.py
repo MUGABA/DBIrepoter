@@ -12,7 +12,9 @@ class validateUser:
 	@staticmethod
 	def validate_name(name):
 		#this validates the names input by the user
-		return isinstance(name, str) and not re.search(r'[\s]', name)
+		#print(re.search(r'[\s]',name))
+		return isinstance(name,str) and not re.search(r'[\s]',name)
+
 
 	@staticmethod
 	def validate_number(numb):
@@ -21,7 +23,7 @@ class validateUser:
 	@staticmethod
 	def validate_password(password):
 		return isinstance(password,str) and len(password)>=8 and re.search(r'[0-9]',password) \
-		and re.search(r'[a-z]',password)
+		and re.search(r'[A-Z]',password)
 #This is check whether the user is an admin
 def check_is_admin(current_user):
 	return current_user[9] is True

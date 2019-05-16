@@ -53,6 +53,7 @@ $ pytest ## To run the tests
 ## Endpoints
 
 | Endpoint                  | Functionality|
+| ---------                 | ---------------|
 | POST /api/v1/users        | Create User account|
 | POST /api/vi/users/login  | Signin a user |
 | POST /api/v1/red-flags    | To report a redflag by the user|

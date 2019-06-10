@@ -1,7 +1,7 @@
 from api import create_app
 from api.database.db import Database 
 
-app = create_app('Development')
+app = create_app('Production')
 db = Database(app.config['DATABASE_URI'])
 
 db.create_tables()
